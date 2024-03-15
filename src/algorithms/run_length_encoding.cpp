@@ -54,16 +54,21 @@ class RunLengthEncodingCompressor : public Compressor {
         compressed_buffer.insert(compressed_buffer.cend(), {count, repr});
     }
 
+    void decompress_buffer(const uint8_t* buffer, const uint& buffer_size, std::vector<uint8_t>& decompressed_buffer) {
+        decompressed_buffer.clear();
+
+        for (int idx = 0; idx < buffer_size; idx += 2) {
+            decompressed_buffer.insert(decompressed_buffer.cend(), buffer[idx], buffer[idx + 1]);
+        }
+    }
+
    public:
     void compress(const std::string input_file_path, const std::string output_file_path) {
-        std::ifstream is;
-        std::ofstream os;
-
         // open the input file to be read in binary mode
-        is.open(input_file_path, std::ios::binary);
+        std::ifstream is(input_file_path, std::ios::binary);
 
         // open the output file to be written in binary mode
-        os.open(output_file_path, std::ios::binary);
+        std::ofstream os(output_file_path, std::ios::binary);
 
         if (!is.is_open()) {
             std::cerr << "Error: Unable to open input file." << std::endl;
@@ -79,8 +84,6 @@ class RunLengthEncodingCompressor : public Compressor {
         is.seekg(0, std::ios::beg);
         os.seekp(0, std::ios::beg);
 
-        std::ostream_iterator<uint8_t> output_iterator = std::ostream_iterator<uint8_t>(os);
-
         // Stores a chunk of data that is to be compressed.
         std::unique_ptr<uint8_t[]> buffer = std::make_unique<uint8_t[]>(BUFFER_SIZE);
 
@@ -89,6 +92,9 @@ class RunLengthEncodingCompressor : public Compressor {
 
         /// Stores the compressed buffer in a count, value format.
         std::vector<uint8_t> compressed_buffer;
+
+        // Used to output compressed buffer to the output file
+        std::ostream_iterator<uint8_t> output_iterator = std::ostream_iterator<uint8_t>(os);
 
         std::cout << "~~~~ Run length Encoding: Starting File Compression ~~~~" << std::endl;
 
@@ -111,6 +117,58 @@ class RunLengthEncodingCompressor : public Compressor {
     }
 
     void decompress(const std::string input_file_path, const std::string output_file_path) {
-        // note that output file if compressed using rle, will have even
+        // note that output file if compressed using rle, will have even number of bytes
+        // hence our buffer size must be a multiple of two in order for it to always take
+        // the number of repeatitions and encoded character together
+
+        // open the input file to be read in binary mode
+        std::ifstream is(input_file_path, std::ios::binary);
+
+        // open the output file to be written in binary mode
+        std::ofstream os(output_file_path, std::ios::binary);
+
+        if (!is.is_open()) {
+            std::cerr << "Error: Unable to open input file." << std::endl;
+            return;
+        }
+
+        if (!os.is_open()) {
+            std::cerr << "Error: Unable to open output file." << std::endl;
+            return;
+        }
+
+        // move the cursor to the beginning of the file
+        is.seekg(0, std::ios::beg);
+        os.seekp(0, std::ios::beg);
+
+        std::ostream_iterator<char> output_iterator = std::ostream_iterator<char>(os);
+
+        // Stores a chunk of data that is to be compressed.
+        std::unique_ptr<uint8_t[]> buffer = std::make_unique<uint8_t[]>(BUFFER_SIZE);
+
+        /// Stores number of bytes read from the input stream.
+        std::streamsize bytes_read;
+
+        /// Stores the compressed buffer in a count, value format.
+        std::vector<uint8_t> decompressed_buffer;
+
+        std::cout << "~~~~ Run length Encoding: Starting File Decompression ~~~~" << std::endl;
+
+        while (!is.eof()) {
+            // read into buffer upto the buffer limit or eof whichever occurs first
+            is.read(reinterpret_cast<char*>(buffer.get()), BUFFER_SIZE);
+
+            bytes_read = is.gcount();
+
+            decompress_buffer(buffer.get(), bytes_read, decompressed_buffer);
+
+            // prints the compressed buffer inside output iterator
+            std::copy(decompressed_buffer.begin(), decompressed_buffer.end(), output_iterator);
+        }
+
+        std::cout << "~~~~ Run length Encoding: File Decompression Ended ~~~~" << std::endl;
+
+        is.close();
+        os.close();
     }
 };
