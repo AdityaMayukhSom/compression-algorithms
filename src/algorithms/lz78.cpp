@@ -88,7 +88,7 @@ class LZ78Compressor : public Compressor {
         char next_char;
         std::string current_str;
 
-        std::cout << "~~~~ LZ78 Decoding: Starting File Decompression ~~~~" << std::endl;
+        std::cout << "* LZ78 Decoding: Starting File Decompression" << std::endl;
 
         while (input_file.read(reinterpret_cast<char*>(&index), sizeof(uint32_t)) && input_file.get(next_char)) {
             if (index == dictionary.size()) {
@@ -106,7 +106,7 @@ class LZ78Compressor : public Compressor {
             }
         }
 
-        std::cout << "~~~~ LZ78 Decoding: File Decompression Ended ~~~~" << std::endl;
+        std::cout << "* LZ78 Decoding: File Decompression Ended" << std::endl;
 
         input_file.close();
         output_file.close();
