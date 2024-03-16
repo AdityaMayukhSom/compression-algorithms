@@ -104,7 +104,7 @@ class LZWCompressor : public Compressor {
         std::string characters = dictionary[compressed_data[0]];
         std::string result = characters;
         std::string entry;
-        std::cout << "~~~~ Lempel Ziv Welsh Encoding: Starting File Decompression ~~~~" << std::endl;
+        std::cout << "* Lempel Ziv Welsh Encoding: Starting File Decompression" << std::endl;
 
         for (size_t i = 1; i < compressed_data.size(); ++i) {
             uint32_t code = compressed_data[i];
@@ -117,7 +117,7 @@ class LZWCompressor : public Compressor {
             dictionary[dict_size++] = characters + entry[0];
             characters = entry;
         }
-        std::cout << "~~~~ Lempel Ziv Welsh Encoding: File Decompression Ended ~~~~" << std::endl;
+        std::cout << "* Lempel Ziv Welsh Encoding: File Decompression Ended" << std::endl;
         output_file << result;
 
         input_file.close();
