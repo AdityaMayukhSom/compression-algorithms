@@ -52,7 +52,9 @@ Then to run, use -
 ### Performance
 
 Benchmark done on AMD Ryzen 7 5700U, 16GB RAM
-> `Compression Ratio = Uncompressed File Size / Compressed File Size`
+```
+Compression Ratio = Uncompressed File Size / Compressed File Size
+```
 
 #### RLE Algorithm
 
