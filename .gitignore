@@ -1,3 +1,5 @@
 encoder
 /compressed
 /decompressed
+comp.c
+mem-mon-out.csv
