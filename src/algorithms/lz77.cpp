@@ -112,7 +112,7 @@ class LZ77Compressor : public Compressor {
 
         std::vector<Triplet> triplet_data;
         int triplet_length;
-        std::cout << "* Lempel Ziv Welsh Encoding: Starting File Compression" << std::endl;
+        // std::cout << "* Lempel Ziv Welsh Encoding: Starting File Compression" << std::endl;
         while (!is.eof()) {
             std::memset(buffer.get(), 0, BUFFER_SIZE);
             // read into buffer upto the buffer limit or eof whichever occurs first
@@ -144,7 +144,7 @@ class LZ77Compressor : public Compressor {
             os.seekp(0, std::ios::end);
             pos = os.tellp();
         }
-        std::cout << "* Lempel Ziv Welsh Encoding: File Compression Ended" << std::endl;
+        // std::cout << "* Lempel Ziv Welsh Encoding: File Compression Ended" << std::endl;
 
         is.close();
         os.close();
@@ -164,7 +164,7 @@ class LZ77Compressor : public Compressor {
             return;
         }
 
-        std::cout << "* LZ77 Encoding: Starting File Decompression" << std::endl;
+        // std::cout << "* LZ77 Encoding: Starting File Decompression" << std::endl;
         // move the cursor to the beginning of the file
         is.seekg(0, std::ios::beg);
         os.seekp(0, std::ios::beg);
@@ -216,7 +216,7 @@ class LZ77Compressor : public Compressor {
             // }
         }
 
-        std::cout << "* LZ77 Encoding: File Decompression Ended" << std::endl;
+        // std::cout << "* LZ77 Encoding: File Decompression Ended" << std::endl;
 
         is.close();
         os.close();

@@ -96,7 +96,7 @@ class RunLengthEncodingCompressor : public Compressor {
         // Used to output compressed buffer to the output file
         std::ostream_iterator<uint8_t> output_iterator = std::ostream_iterator<uint8_t>(os);
 
-        std::cout << "* Run length Encoding: Starting File Compression" << std::endl;
+        // std::cout << "* Run length Encoding: Starting File Compression" << std::endl;
 
         while (!is.eof()) {
             // read into buffer upto the buffer limit or eof whichever occurs first
@@ -110,7 +110,7 @@ class RunLengthEncodingCompressor : public Compressor {
             std::copy(compressed_buffer.begin(), compressed_buffer.end(), output_iterator);
         }
 
-        std::cout << "* Run length Encoding: File Compression Ended" << std::endl;
+        // std::cout << "* Run length Encoding: File Compression Ended" << std::endl;
 
         is.close();
         os.close();
@@ -152,7 +152,7 @@ class RunLengthEncodingCompressor : public Compressor {
         /// Stores the compressed buffer in a count, value format.
         std::vector<uint8_t> decompressed_buffer;
 
-        std::cout << "* Run length Encoding: Starting File Decompression" << std::endl;
+        // std::cout << "* Run length Encoding: Starting File Decompression" << std::endl;
 
         while (!is.eof()) {
             // read into buffer upto the buffer limit or eof whichever occurs first
@@ -166,7 +166,7 @@ class RunLengthEncodingCompressor : public Compressor {
             std::copy(decompressed_buffer.begin(), decompressed_buffer.end(), output_iterator);
         }
 
-        std::cout << "* Run length Encoding: File Decompression Ended" << std::endl;
+        // std::cout << "* Run length Encoding: File Decompression Ended" << std::endl;
 
         is.close();
         os.close();
