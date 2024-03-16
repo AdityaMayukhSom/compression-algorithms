@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "./src/algorithms/lz77.cpp"
 #include "./src/algorithms/lzw.cpp"
 #include "./src/algorithms/run_length_encoding.cpp"
 #include "./src/utils/setup_utils.cpp"
@@ -31,8 +32,9 @@ int main(int argc, char* argv[]) {
 
     Compressor* rlec = new RunLengthEncodingCompressor();
     Compressor* lzwc = new LZWCompressor();
+    Compressor* lz77c = new LZ77Compressor();
 
-    Compressor* com = lzwc;
+    Compressor* com = lz77c;
 
     com->compress(input_file_path, compressed_file_path);
     com->decompress(compressed_file_path, decompressed_file_path);
