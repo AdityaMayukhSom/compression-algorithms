@@ -49,9 +49,10 @@ Then to run, use -
 
 **Note:** Files need to reside inside `./original` directory where `./encoder` is run.
 
-### Performance 
+### Performance
 
 Benchmark done on AMD Ryzen 7 5700U, 16GB RAM
+> `Compression Ratio = Uncompressed File Size / Compressed File Size`
 
 #### RLE Algorithm
 
