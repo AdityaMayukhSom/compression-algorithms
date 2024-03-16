@@ -14,7 +14,7 @@
 class LZ77Compressor : public Compressor {
    private:
     int look_ahead_buffer = 4096;
-    int search_buffer = 2048;
+    int search_buffer = 512;
 
     typedef struct Triplet {
        public:
@@ -120,23 +120,14 @@ class LZ77Compressor : public Compressor {
             compress_buffer(buffer.get(), triplet_data, triplet_length);
 
             int bytes_to_read = 0;
-            std::string res;
-            for (int i = 0; i < triplet_length; i++) {
-                if (triplet_data[i].length_of_match == 0 && triplet_data[i].offset == 0) {
-                    bytes_to_read += sizeof(Triplet::codeword) + 1;
-                } else {
-                    // os << char(0) << triplet_data[i].codeword;
-                    bytes_to_read += sizeof(Triplet) + 1;
-                }
-            }
-
-            os << bytes_to_read;
+            os.write(reinterpret_cast<const char*>(&bytes_to_read), sizeof(bytes_to_read));
 
             for (int i = 0; i < triplet_length; i++) {
                 if (triplet_data[i].length_of_match == 0 && triplet_data[i].offset == 0) {
                     os.write(reinterpret_cast<const char*>(&zero), sizeof(zero));
                     os.write(reinterpret_cast<const char*>(&triplet_data[i].codeword),
                              sizeof(triplet_data[i].codeword));
+                    bytes_to_read += sizeof(Triplet::codeword) + 1;
                 } else {
                     os.write(reinterpret_cast<const char*>(&one), sizeof(one));
                     os.write(reinterpret_cast<const char*>(&triplet_data[i].offset), sizeof(triplet_data[i].offset));
@@ -144,8 +135,14 @@ class LZ77Compressor : public Compressor {
                              sizeof(triplet_data[i].length_of_match));
                     os.write(reinterpret_cast<const char*>(&triplet_data[i].codeword),
                              sizeof(triplet_data[i].codeword));
+                    bytes_to_read += sizeof(Triplet) + 1;
                 }
             }
+            long pos = os.tellp();
+            os.seekp(pos - bytes_to_read - sizeof(bytes_to_read));
+            os.write(reinterpret_cast<const char*>(&bytes_to_read), sizeof(bytes_to_read));
+            os.seekp(0, std::ios::end);
+            pos = os.tellp();
         }
         std::cout << "* Lempel Ziv Welsh Encoding: File Compression Ended" << std::endl;
 
@@ -180,9 +177,9 @@ class LZ77Compressor : public Compressor {
         int bytes_to_read;
 
         while (!is.eof()) {
-            is >> bytes_to_read;
+            // is >> bytes_to_read;
             // read into buffer upto the buffer limit or eof whichever occurs first
-            // is.read(reinterpret_cast<char*>(&bytes_to_read), sizeof(bytes_to_read));
+            is.read(reinterpret_cast<char*>(&bytes_to_read), sizeof(bytes_to_read));
             if (is.eof()) {
                 break;
             }
