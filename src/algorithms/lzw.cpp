@@ -39,7 +39,7 @@ class LZWCompressor : public Compressor {
 
         std::vector<uint32_t> compressed_data;
 
-        std::cout << "~~~~ Lempel Ziv Welsh Encoding: Starting File Compression ~~~~" << std::endl;
+        std::cout << "* Lempel Ziv Welsh Encoding: Starting File Compression" << std::endl;
 
         while (input_file.get(input_char)) {
             test = current + input_char;
@@ -61,7 +61,7 @@ class LZWCompressor : public Compressor {
             compressed_data.push_back(dictionary[current]);
         }
 
-        std::cout << "~~~~ Lempel Ziv Welsh Encoding: File ompression Ended ~~~~" << std::endl;
+        std::cout << "* Lempel Ziv Welsh Encoding: File ompression Ended" << std::endl;
 
         uint64_t size = compressed_data.size();
 
@@ -123,4 +123,6 @@ class LZWCompressor : public Compressor {
         input_file.close();
         output_file.close();
     }
+
+    LZWCompressor() : Compressor("LZW", "lzw") {}
 };

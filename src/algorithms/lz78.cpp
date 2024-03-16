@@ -34,7 +34,7 @@ class LZ78Compressor : public Compressor {
         std::string current;
         char input_char;
 
-        std::cout << "~~~~ LZ78 Encoding: Starting File Compression ~~~~" << std::endl;
+        std::cout << "* LZ78 Encoding: Starting File Compression" << std::endl;
 
         while (input_file.get(input_char)) {
             current.push_back(input_char);
@@ -61,7 +61,7 @@ class LZ78Compressor : public Compressor {
             output_file.put(current.back());
         }
 
-        std::cout << "~~~~ LZ78 Encoding: File Compression Ended ~~~~" << std::endl;
+        std::cout << "* LZ78 Encoding: File Compression Ended" << std::endl;
 
         input_file.close();
         output_file.close();
@@ -111,4 +111,6 @@ class LZ78Compressor : public Compressor {
         input_file.close();
         output_file.close();
     }
+
+    LZ78Compressor() : Compressor("LZ78", "lz78") {}
 };
