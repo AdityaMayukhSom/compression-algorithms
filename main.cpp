@@ -40,13 +40,18 @@ int main(int argc, char* argv[]) {
 
     mem_monitor mm("mem-mon-out.csv", std::chrono::milliseconds(1));
 
+    VariadicTable<std::string, double, double, double> average(
+        {"Algorithm Name", "Compression Ratio", "Compression Speed (Mbps)", "Decompression Speed (Mbps)"});
+
     mm.event("Algorithms Execution Started");
     for (Compressor* com : comps) {
+        double avg_comp_ratio = 0, avg_comp_speed = 0, avg_decomp_speed = 0;
         std::cout << com->algorithm_name << "\n";
         VariadicTable<std::string, double, double, double, double, double, double> table(
             {"File", "Compression Time (Sec)", "Compression Ratio", "Compression Speed (Mbps)", "Space Saving (%)",
              "Decompression Time (Sec)", "Decompression Speed (Mbps)"});
 
+        int files_tested_on = 0;
         for (std::string test_file : test_files) {
             std::vector<std::string> tokens = Tokenizer::getTokens(test_file, ".");
 
@@ -74,18 +79,36 @@ int main(int argc, char* argv[]) {
             com->decompress(compressed_file_path, decompressed_file_path);
             clock_t decomp_end = clock();
 
-            double compression_ratio = Profiler::calculate_compression_ratio(input_file_path, compressed_file_path);
+            clock_t comp_time = (comp_end - comp_start);
+            clock_t decomp_time = decomp_end - decomp_start;
 
-            table.addRow(test_file + "(" + FileSizeUtil::getFileSize(input_file_path) + ")",
-                         ((double)(comp_end - comp_start) / CLOCKS_PER_SEC), compression_ratio,
-                         Profiler::calculate_processing_speed(comp_start, comp_end, input_file_path),
-                         Profiler::calculate_space_saving(compression_ratio),
-                         ((double)(decomp_end - decomp_start) / CLOCKS_PER_SEC),
-                         Profiler::calculate_processing_speed(decomp_start, decomp_end, decompressed_file_path));
+            double compression_ratio = Profiler::calculate_compression_ratio(input_file_path, compressed_file_path);
+            double comp_speed = Profiler::calculate_processing_speed(comp_time, input_file_path);
+            double decomp_speed = Profiler::calculate_processing_speed(decomp_time, decompressed_file_path);
+
+            table.addRow(                                                            //
+                test_file + "(" + FileSizeUtil::getFileSize(input_file_path) + ")",  //
+                ((double)comp_time / CLOCKS_PER_SEC),                                //
+                compression_ratio,                                                   //
+                comp_speed,                                                          //
+                Profiler::calculate_space_saving(compression_ratio),                 //
+                ((double)decomp_time / CLOCKS_PER_SEC),                              //
+                decomp_speed                                                         //
+            );
+
+            files_tested_on++;
+            avg_comp_speed += comp_speed;
+            avg_decomp_speed += decomp_speed;
+            avg_comp_ratio += compression_ratio;
         }
 
+        if (files_tested_on > 0) {
+            average.addRow(com->algorithm_name, avg_comp_ratio / files_tested_on, avg_comp_speed / files_tested_on,
+                           avg_decomp_speed / files_tested_on);
+        }
         table.print(std::cout);
     }
-
+    std::cout << "\ncomparison between different algorithms: \n";
+    average.print(std::cout);
     mm.event("Algorithms Execution Finished");
 }
