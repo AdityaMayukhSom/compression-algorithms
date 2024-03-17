@@ -5,6 +5,7 @@ Name - Aditya Mayukh Som
 ### Description
 
 - Implemented C++ functions to (de)compress input data using 'Run-Length encoding' and 'Dictionary coder'. Implemented algorithms are:
+- Implemented C++ functions to (de)compress input data using 'Run-Length encoding' and 'Dictionary coder'. Implemented algorithms are:
   1. Run-Length encoding
   2. LZW
   3. LZ77
@@ -45,6 +46,9 @@ Then to run the algorithm, use -
 ./encoder filename1.ext filename2.ext filename3.txt
 ```
 
+The core algorithms are stored inside `src/algorithm` which can be used separately from the existig code by simply copy pasting them into other projects.
+
+**Note:** Files need to reside inside `./original` directory where `./encoder` is run to execute the currently implemented main function. Compression algorithms take input and output paths as parameter, hence to use them in other projects, there is no need to store input files inside `./original` directory.
 The core algorithms are stored inside `src/algorithm` which can be used separately from the existig code by simply copy pasting them into other projects.
 
 **Note:** Files need to reside inside `./original` directory where `./encoder` is run to execute the currently implemented main function. Compression algorithms take input and output paths as parameter, hence to use them in other projects, there is no need to store input files inside `./original` directory.
