@@ -22,9 +22,7 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    std::vector<std::string> test_files = {"test1.txt", "test2.txt", "test3.txt", "test4.txt", "test5.txt"};
-
-    test_files.clear();
+    std::vector<std::string> test_files;
     for (int i = 1; i < argc; i++) {
         test_files.push_back(argv[i]);
     }
