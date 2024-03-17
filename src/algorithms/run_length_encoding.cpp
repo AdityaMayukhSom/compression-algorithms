@@ -67,16 +67,16 @@ class RunLengthEncodingCompressor : public Compressor {
         // open the input file to be read in binary mode
         std::ifstream is(input_file_path, std::ios::binary);
 
-        // open the output file to be written in binary mode
-        std::ofstream os(output_file_path, std::ios::binary);
-
         if (!is.is_open()) {
-            std::cerr << "Error: Unable to open input file." << std::endl;
+            std::cerr << "RLE error: unable to open compression input file " << input_file_path << "\n";
             return;
         }
 
+        // open the output file to be written in binary mode
+        std::ofstream os(output_file_path, std::ios::binary);
+
         if (!os.is_open()) {
-            std::cerr << "Error: Unable to open output file." << std::endl;
+            std::cerr << "RLE error: unable to open compression output file " << output_file_path << "\n";
             return;
         }
 
@@ -123,17 +123,15 @@ class RunLengthEncodingCompressor : public Compressor {
 
         // open the input file to be read in binary mode
         std::ifstream is(input_file_path, std::ios::binary);
-
-        // open the output file to be written in binary mode
-        std::ofstream os(output_file_path, std::ios::binary);
-
         if (!is.is_open()) {
-            std::cerr << "Error: Unable to open input file." << std::endl;
+            std::cerr << "RLE error: unable to open decompression input file " << input_file_path << "\n";
             return;
         }
 
+        // open the output file to be written in binary mode
+        std::ofstream os(output_file_path, std::ios::binary);
         if (!os.is_open()) {
-            std::cerr << "Error: Unable to open output file." << std::endl;
+            std::cerr << " error: unable to open decompression output file " << output_file_path << "\n";
             return;
         }
 

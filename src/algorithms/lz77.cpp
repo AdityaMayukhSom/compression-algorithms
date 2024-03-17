@@ -89,15 +89,14 @@ class LZ77Compressor : public Compressor {
    public:
     void compress(const std::string input_file_path, const std::string output_file_path) {
         std::ifstream is(input_file_path, std::ios::binary);
-
-        std::ofstream os(output_file_path, std::ios::binary);
-
         if (!is.is_open()) {
-            std::cerr << "Error: Unable to open input file." << std::endl;
+            std::cerr << "LZ77 error: unable to open compression input file " << input_file_path << "\n";
             return;
         }
+
+        std::ofstream os(output_file_path, std::ios::binary);
         if (!os.is_open()) {
-            std::cerr << "Error: Unable to open output file." << std::endl;
+            std::cerr << "LZ77 error: unable to open compression output file " << output_file_path << "\n";
             return;
         }
 
@@ -152,15 +151,14 @@ class LZ77Compressor : public Compressor {
 
     void decompress(const std::string input_file_path, const std::string output_file_path) {
         std::ifstream is(input_file_path, std::ios::binary);
-        std::ofstream os(output_file_path, std::ios::binary);
-
         if (!is.is_open()) {
-            std::cerr << "Error: Unable to open input file." << std::endl;
+            std::cerr << "LZ77 error: unable to open decompression input file " << input_file_path << "\n";
             return;
         }
 
+        std::ofstream os(output_file_path, std::ios::binary);
         if (!os.is_open()) {
-            std::cerr << "Error: Unable to open output file." << std::endl;
+            std::cerr << "LZ77 error: unable to open decompression output file " << output_file_path << "\n";
             return;
         }
 
