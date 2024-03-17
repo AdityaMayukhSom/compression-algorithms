@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "./compressor.cpp"
+#include "./config.hpp"
 
 class LZ77Compressor : public Compressor {
    private:

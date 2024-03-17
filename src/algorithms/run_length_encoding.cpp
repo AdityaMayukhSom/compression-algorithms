@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "./compressor.cpp"
+#include "./config.hpp"
 
 class RunLengthEncodingCompressor : public Compressor {
     /**

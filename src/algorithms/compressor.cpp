@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "../config/config.hpp"
-
 class Compressor {
    public:
     std::string algorithm_name;
