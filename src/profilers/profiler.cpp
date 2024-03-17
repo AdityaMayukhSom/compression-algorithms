@@ -66,4 +66,26 @@ class Profiler {
         double speed = f_size / ((double)(end - start) / CLOCKS_PER_SEC);
         return speed;
     }
+
+    static double calculate_processing_speed(const clock_t time_taken, const std::string filename,
+                                             const std::string unit = "MB") {
+        std::ifstream f(filename, std::ios::binary);
+
+        if (!f.is_open()) {
+            std::cerr << "Error: Unable to open file." << std::endl;
+            return -1;
+        }
+
+        f.seekg(0, std::ios::end);
+
+        long file_size = f.tellg();
+        double f_size = 0.0;
+        if (unit == "MB") {
+            f_size = file_size / ((double)1024 * 1024);  // converting into mb
+        } else if (unit == "KB") {
+            f_size = file_size / ((double)1024);
+        }
+        double speed = f_size / ((double)(time_taken) / CLOCKS_PER_SEC);
+        return speed;
+    }
 };
