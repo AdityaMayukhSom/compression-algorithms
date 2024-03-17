@@ -9,9 +9,10 @@
 #include "./src/algorithms/lzw.cpp"
 #include "./src/algorithms/run_length_encoding.cpp"
 #include "./src/lib/mem_monitor.hpp"
-#include "./src/lib/tabulate.hpp"
+#include "./src/lib/variadic_table.hpp"
 #include "./src/profilers/profiler.cpp"
 #include "./src/utils/setup_utils.cpp"
+#include "./src/utils/size_convertor.cpp"
 #include "./src/utils/tokenizer.cpp"
 
 int main(int argc, char* argv[]) {
@@ -46,10 +47,12 @@ int main(int argc, char* argv[]) {
     mm.event("Algorithms Execution Started");
     for (Compressor* com : comps) {
         std::cout << com->algorithm_name << "\n";
-        tabulate::Table table;
-        table.add_row({"Filename", "Compression Time(Seconds)",
-                       "Compression Ratio", "Space Saving(%)",
-                       "Decompression Time(Seconds)"});
+        VariadicTable<std::string, double, double, double, double, double,
+                      double>
+            table({"File", "Compression Time (Sec)", "Compression Ratio",
+                   "Compression Speed (Mbps)", "Space Saving (%)",
+                   "Decompression Time (Sec)", "Decompression Speed (Mbps)"});
+
         for (std::string test_file : test_files) {
             std::vector<std::string> tokens =
                 Tokenizer::getTokens(test_file, ".");
@@ -71,29 +74,23 @@ int main(int argc, char* argv[]) {
             double compression_ratio = Profiler::calculate_compression_ratio(
                 input_file_path, compressed_file_path);
 
-            // printf("Compression Time: %f [Seconds]\n", ((double)(comp_end -
-            // comp_start) / CLOCKS_PER_SEC)); printf("Compression Ratio: %lf
-            // \n", compression_ratio); printf("Space Saving: %.2lf%%\n",
-            // Profiler::calculate_space_saving(compression_ratio));
-
             mm.event("started " + com->algorithm_name + " decompression");
             clock_t decomp_start = clock();
             com->decompress(compressed_file_path, decompressed_file_path);
             clock_t decomp_end = clock();
 
-            // printf("Deompression Time: %f [Seconds]\n\n",
-            //        ((double)(decomp_end - decomp_start) / CLOCKS_PER_SEC));
-
-            table.add_row(
-                tabulate::RowStream{}
-                << test_file
-                << ((double)(comp_end - comp_start) / CLOCKS_PER_SEC)
-                << compression_ratio
-                << Profiler::calculate_space_saving(compression_ratio)
-                << ((double)(decomp_end - decomp_start) / CLOCKS_PER_SEC));
+            table.addRow(test_file + "(" +
+                             SizeConvertor::getFileSize(input_file_path) + ")",
+                         ((double)(comp_end - comp_start) / CLOCKS_PER_SEC),
+                         compression_ratio,
+                         Profiler::calculate_processing_speed(
+                             comp_start, comp_end, input_file_path),
+                         Profiler::calculate_space_saving(compression_ratio),
+                         ((double)(decomp_end - decomp_start) / CLOCKS_PER_SEC),
+                         Profiler::calculate_processing_speed(
+                             decomp_start, decomp_end, compressed_file_path));
         }
-
-        std::cout << table << std::endl;
+        table.print(std::cout);
     }
     mm.event("Algorithms Execution Finished");
 }
