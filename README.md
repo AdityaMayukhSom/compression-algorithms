@@ -53,7 +53,7 @@ The core algorithms are stored inside `src/algorithm` which can be used separate
 
 **Note:** Files need to reside inside `./original` directory where `./encoder` is run to execute the currently implemented main function. Compression algorithms take input and output paths as parameter, hence to use them in other projects, there is no need to store input files inside `./original` directory.
 
-### Performance And Comparison
+### Benchmarking And Comparison
 
 Benchmarking done on AMD Ryzen 7 5700U With Raedon Graphics, 1800MHz, 8 Cores, 16GB RAM
 
@@ -63,9 +63,14 @@ Compression Speed = Input File Size / Compression Time
 Decompression Speed = Decompressed File Size / Decompression Time
 ```
 
-### Results
+#### Benchmarks
 
 ![results from running the algorithms](./results.png)
+
+#### Comparison
+
+![comparative study on running the algorithms](./comparison.png)
+
 
 ### Acknowledgements
 
