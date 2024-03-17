@@ -67,7 +67,7 @@ Decompression Speed = Decompressed File Size / Decompression Time
 
 ![results from running the algorithms](./results.png)
 
-#### Comparison
+#### Average Compression Ratio, Compression Speed, Decompression Speed and Comparison Among Them
 
 ![comparative study on running the algorithms](./comparison.png)
 
