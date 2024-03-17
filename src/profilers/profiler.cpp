@@ -17,15 +17,14 @@ class Profiler {
     static double calculate_compression_ratio(const std::string original_file_path,
                                               const std::string compressed_file_path) {
         std::ifstream original_file(original_file_path, std::ios::binary);
-        std::ifstream compressed_file(compressed_file_path, std::ios::binary);
-
         if (!original_file.is_open()) {
-            std::cerr << "Error: Unable to open original file: " << original_file_path << std::endl;
+            std::cerr << "Profiler error: Unable to open original file: " << original_file_path << std::endl;
             return -1;
         }
 
+        std::ifstream compressed_file(compressed_file_path, std::ios::binary);
         if (!compressed_file.is_open()) {
-            std::cerr << "Error: Unable to open compressed file:" << compressed_file_path << std::endl;
+            std::cerr << "Profiler rror: Unable to open compressed file:" << compressed_file_path << std::endl;
             return -1;
         }
         original_file.seekg(0, std::ios::end);
