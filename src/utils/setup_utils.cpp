@@ -29,4 +29,13 @@ class SetupUtils {
             return false;
         }
     }
+
+    inline static bool exists(const std::string& path) {
+        if (FILE* file = fopen(path.c_str(), "r")) {
+            fclose(file);
+            return true;
+        } else {
+            return false;
+        }
+    }
 };
