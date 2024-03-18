@@ -3,3 +3,4 @@ encoder
 /decompressed
 comp.c
 mem-mon-out.csv
+/memory-usage/memory_usage
