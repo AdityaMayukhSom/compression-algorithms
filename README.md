@@ -75,6 +75,7 @@ Decompression Speed = Decompressed File Size / Decompression Time
 
 | File      | RLE     | LZW     | LZ77    | LZ78    |
 | --------- | ------- | ------- | ------- | ------- |
+| test1.txt | 2.51172 | 0       | 2.45312 | 0       |
 | test2.txt | 4.46484 | 67.3555 | 6.125   | 61.7109 |
 | test3.txt | 3.45312 | 7.00391 | 3.41406 | 6.14844 |
 | test4.txt | 4.47266 | 76.875  | 6.08203 | 65.9531 |
