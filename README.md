@@ -71,7 +71,7 @@ Decompression Speed = Decompressed File Size / Decompression Time
 
 ![comparative study on running the algorithms](./comparison.png)
 
-#### Memory Consumption (Maximum [RSS](https://en.wikipedia.org/wiki/Resident_set_size) in Mb)
+#### Memory Consumption for Compression (Maximum [RSS](https://en.wikipedia.org/wiki/Resident_set_size) in Mb)
 
 | File      | RLE     | LZW     | LZ77    | LZ78    |
 | --------- | ------- | ------- | ------- | ------- |
